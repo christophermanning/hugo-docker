@@ -1,0 +1,3 @@
+resources/_gen
+Dockerfile.build
+public

@@ -1,0 +1,11 @@
+{{- with resources.Get "css/tailwind.css" | postCSS (dict "config" "./assets/css/postcss.config.js") -}}
+  {{- if eq hugo.Environment "development" }}
+    {{- with . | resources.ExecuteAsTemplate (printf "css/styles.dev.%v.css" now.UnixMilli) . }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{- end }}
+  {{- else }}
+    {{- with . | minify | fingerprint | resources.PostProcess }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+    {{- end }}
+  {{- end }}
+{{- end }}
